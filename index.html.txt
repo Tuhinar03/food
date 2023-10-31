@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="tuhin ar="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Tuhin AR Food Store</title>
+</head>
+<body>
+    <header>
+        <h1>Tuhin AR Food Store</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Menu</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+    <main>
+        <section class="menu">
+            <h2>Menu</h2>
+            <div class="item">
+                <img src="burger.jpg" alt="Burger">
+                <h3>Burger</h3>
+                <p>Delicious burger with all the fixings.</p>
+                <p class="price">$5.99</p>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+            <div class="item">
+                <img src="pizza.jpg" alt="Pizza">
+                <h3>Pizza</h3>
+                <p>Authentic Italian pizza with your choice of toppings.</p>
+                <p class="price">$9.99</p>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </section>
+        <section class="cart">
+            <h2>Cart</h2>
+            <ul class="cart-items">
+                <!-- Cart items will be added here using JavaScript -->
+            </ul>
+            <p>Total: $<span id="cart-total">0.00</span></p>
+        </section>
+    </main>body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+}
+
+h1 {
+    margin: 0;
+}
+
+button {
+    background-color: #555;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #777;
+}
+
+main {
+    padding: 20px;
+}
+
+#food-items {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.food-item {
+    border: 1px solid #ccc;
+    margin: 10px;
+    padding: 10px;
+    text-align: center;
+}
+
+#cart {
+    background-color: #f7f7f7;
+    padding: 20px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 300px;
+    overflow: auto;
+}
+
+.hidden {
+    display: none;
+}
+
+#cart-items {
+    list-style: none;
+    padding: 0;
+}
+
+#cart-button {
+    position: relative;
+}
+
+#checkout-button {
+    background-color: #555;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#checkout-button:hover {
+    background-color: #777;
+}
+
+    <footer>
+        <p>&copy; 2023 Food Store</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html> // Sample food items
+const foodItems = [
+    { name: 'Burger', price: 5 },
+    { name: 'Pizza', price: 8 },
+    { name: 'Fries', price: 3 },
+    { name: 'Soda', price: 2 },
+];
+
+// Initialize the cart
+const cart = [];
+
+// DOM elements
+const foodItemsSection = document.getElementById('food-items');
+const cartButton = document.getElementById('cart-button');
+const cartElement = document.getElementById('cart');
+const cartItemsList = document.getElementById('cart-items');
+const checkoutButton = document.getElementById('checkout-button');
+
+// Event listener for showing/hiding the cart
+cartButton.addEventListener('click', () => {
+    cartElement.classList.toggle('hidden');
+});
+
+// Event listener for adding items to the cart
+foodItems.forEach((food, index) => {
+    const foodItem = document.createElement('div');
+    foodItem.className = 'food-item';
+    foodItem.innerHTML = `
+        <h3>${food.name}</h3>
+        <p>$${food.price.toFixed(2)}</p>
+        <button class="add-to-cart-button" data-index="${index}">Add to Cart</button>
+    `;
+    foodItemsSection.appendChild(foodItem);
+
+    // Add to cart event listener
+    const addToCartButton = foodItem.querySelector('.add-to-cart-button');
+    addToCartButton.addEventListener('click', () => {
+        const itemIndex = parseInt(addToCartButton.getAttribute('data-index'));
+        const selectedItem = foodItems[itemIndex];
+        cart.push(selectedItem);
+        updateCart();
+    });
+});
+
+// Update the cart and checkout
+function updateCart() {
+    cartItemsList.innerHTML = '';
+    let total = 0;
+    cart.forEach((item, index) => {
+        const cartItem = document.createElement('li');
+        cartItem.innerHTML = `${item.name} - $${item.price.toFixed(2)}`;
+        cartItemsList.appendChild(cartItem);
+        total += item.price;
+    });
+
+    cartButton.textContent = `
